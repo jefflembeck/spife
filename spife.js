@@ -239,20 +239,20 @@ function destroyStreamOnClose (stream) {
   else stream.resume()
 }
 
-async function middlewareMembrane1 (req, next) {
-  try {
-    return checkMiddlewareResolution(await next(req))
-  } catch (err) {
+function middlewareMembrane1 (req, next) {
+  return next(req).then(result => {
+    return checkMiddlewareResolution(result)
+  }).catch(err => {
     throw checkMiddlewareRejection(err)
-  }
+  })
 }
 
-async function middlewareMembrane3 (req, match, context, next) {
-  try {
-    return checkMiddlewareResolution(await next(req, match, context))
-  } catch (err) {
+function middlewareMembrane3 (req, match, context, next) {
+  return next(req, match, context).then(result => {
+    return checkMiddlewareResolution(result)
+  }).catch(err => {
     throw checkMiddlewareRejection(err)
-  }
+  })
 }
 
 function checkMiddlewareResolution (response) {
