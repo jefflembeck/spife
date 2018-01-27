@@ -343,6 +343,36 @@ test('returning value from request mw returns request', assert => Promise.try(()
   return spifeServer.get('closed')
 }))
 
+test('throwing error from request mw returns request', assert => Promise.try(() => {
+  const server = http.createServer().listen(60880)
+  const list = []
+  const mw = [{
+    processRequest (req) {
+      list.push('1')
+      throw new Error('haha')
+    }
+  }]
+  const spifeServer = spife('anything', server, routing`
+    GET / view
+  `({
+    view (req) {
+      list.push('2')
+      return 'ok'
+    }
+  }), mw)
+
+  http.get({method: 'GET', port: 60880}, res => {
+    res.on('data', data => {
+      assert.equal(data + '', JSON.stringify({ message: 'haha' }))
+      assert.equal(list.length, 1)
+      assert.deepEqual(list, ['1'])
+      server.close()
+    })
+  })
+
+  return spifeServer.get('closed')
+}))
+
 test('view mw response skips view', assert => Promise.try(() => {
   const server = http.createServer().listen(60880)
   const list = []
@@ -503,7 +533,7 @@ test('response splitting: header key', assert => Promise.try(() => {
     assert.equal(data.length, 1)
     server.close()
   })
-  conn.end(`GET /?p=%E0%B4%8A HTTP/1.1
+  conn.write(`GET /?p=%E0%B4%8A HTTP/1.1
 Host: localhost:60880
 Connection: close\r\n\r\n`)
   return spifeServer.get('closed')
@@ -530,7 +560,7 @@ test('response splitting: header value', assert => Promise.try(() => {
     assert.equal(data.length, 1)
     server.close()
   })
-  conn.end(`GET /?p=%E0%B4%8A HTTP/1.1
+  conn.write(`GET /?p=%E0%B4%8A HTTP/1.1
 Host: localhost:60880
 Connection: close\r\n\r\n`)
   return spifeServer.get('closed')
