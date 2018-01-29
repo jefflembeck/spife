@@ -82,7 +82,7 @@ function createTransactionalTest (baseTest, routes, middleware, dbName, port) {
       var rollbackTransaction = null
       /* eslint-disable promise/param-names */
       const transactionPromise = new Promise((_, reject) => {
-        rollbackTransaction = reject
+        rollbackTransaction = () => reject(new Error('Rolling back transaction'))
       })
       /* eslint-enable promise/param-names */
 
@@ -111,17 +111,17 @@ function createTransactionalTest (baseTest, routes, middleware, dbName, port) {
             session.assign(process.domain)
             db.session.queries = []
             db.session.startTime = Date.now()
-            return next()
+            return next(req)
           })
         }
       }
       const trackRouteQueryCountMW = {
         processView (req, match, context, next) {
           db.session.routeName = req.viewName
-          return next()
+          return next(req, match, context)
         },
         processRequest (req, next) {
-          return next().then(resp => {
+          return next(req).then(resp => {
             aggregateInfo(
               db.session.routeName,
               db.session.queries,
