@@ -204,7 +204,7 @@ class Server {
     })
   }
 
-  async onrequest (req, res) {
+  onrequest (req, res) {
     const subdomain = domain.create()
     const parsed = url.parse(req.url, true)
     const kreq = new SpifeRequest(req, this, parsed)
@@ -212,24 +212,21 @@ class Server {
     subdomain.add(res)
     subdomain.enter()
     domainToRequest.request = kreq
-    const getResponse = this.processRequestOnion(kreq)
-    getResponse.catch(() => {})
-    subdomain.exit()
+    this.processRequestOnion(kreq).then(kres => {
+      subdomain.exit()
+      return handleResponse(this, kreq, kres)
+    }).catch(err => {
+      return handleLifecycleError(this, kreq, err)
+    }).then(response => {
+      subdomain.remove(req)
+      subdomain.remove(res)
+      subdomain.exit()
 
-    var response
-    try {
-      response = handleResponse(this, kreq, await getResponse)
-    } catch (err) {
-      response = handleLifecycleError(this, kreq, err)
-    }
-    subdomain.remove(req)
-    subdomain.remove(res)
-    subdomain.exit()
-
-    res.writeHead(response.status || 200, response.headers)
-    res.on('unpipe', destroyStreamOnClose)
-    res.on('error', this.emitStreamError)
-    response.stream.pipe(res)
+      res.writeHead(response.status || 200, response.headers)
+      res.on('unpipe', destroyStreamOnClose)
+      res.on('error', this.emitStreamError)
+      response.stream.pipe(res)
+    })
   }
 }
 
