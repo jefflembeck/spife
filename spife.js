@@ -212,7 +212,7 @@ class Server {
     subdomain.add(res)
     subdomain.enter()
     domainToRequest.request = kreq
-    this.processRequestOnion(kreq).then(kres => {
+    return this.processRequestOnion(kreq).then(kres => {
       subdomain.exit()
       return handleResponse(this, kreq, kres)
     }).catch(err => {
