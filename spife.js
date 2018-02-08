@@ -212,20 +212,22 @@ class Server {
     subdomain.add(res)
     subdomain.enter()
     domainToRequest.request = kreq
-    return this.processRequestOnion(kreq).then(kres => {
-      subdomain.exit()
-      return handleResponse(this, kreq, kres)
-    }).catch(err => {
-      return handleLifecycleError(this, kreq, err)
-    }).then(response => {
-      subdomain.remove(req)
-      subdomain.remove(res)
-      subdomain.exit()
 
-      res.writeHead(response.status || 200, response.headers)
-      res.on('unpipe', destroyStreamOnClose)
-      res.on('error', this.emitStreamError)
-      response.stream.pipe(res)
+    return subdomain.run(() => {
+      return this.processRequestOnion(kreq).then(kres => {
+        return handleResponse(this, kreq, kres)
+      }).catch(err => {
+        return handleLifecycleError(this, kreq, err)
+      }).then(response => {
+        subdomain.remove(req)
+        subdomain.remove(res)
+        subdomain.exit()
+
+        res.writeHead(response.status || 200, response.headers)
+        res.on('unpipe', destroyStreamOnClose)
+        res.on('error', this.emitStreamError)
+        response.stream.pipe(res)
+      })
     })
   }
 }
