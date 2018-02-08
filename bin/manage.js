@@ -3,4 +3,4 @@
 
 const {run} = require('../lib/commands')
 
-run(process.env.KNORK_SETTINGS, process.argv)
+run(process.env.SPIFE_SETTINGS || process.env.KNORK_SETTINGS, process.argv)
