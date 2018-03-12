@@ -213,21 +213,24 @@ class Server {
     subdomain.enter()
     domainToRequest.request = kreq
 
-    return subdomain.run(() => {
-      return this.processRequestOnion(kreq).then(kres => {
-        return handleResponse(this, kreq, kres)
-      }).catch(err => {
-        return handleLifecycleError(this, kreq, err)
-      }).then(response => {
-        subdomain.remove(req)
-        subdomain.remove(res)
-        subdomain.exit()
-
-        res.writeHead(response.status || 200, response.headers)
-        res.on('unpipe', destroyStreamOnClose)
-        res.on('error', this.emitStreamError)
-        response.stream.pipe(res)
-      })
+    return this.processRequestOnion(kreq).then(kres => {
+      return handleResponse(this, kreq, kres)
+    }).catch(err => {
+      return handleLifecycleError(this, kreq, err)
+    }).then(response => {
+      res.writeHead(response.status || 200, response.headers)
+      res.on('unpipe', destroyStreamOnClose)
+      res.on('error', this.emitStreamError)
+      response.stream.pipe(res)
+      return Promise.race([
+        new Promise(resolve => res.once('finish', resolve)),
+        new Promise(resolve => res.once('close', resolve))
+      ])
+    }).finally(() => {
+      // this is in place to mitigate the domain leak that occurs when any middleware or view throws
+      // it is an ugly hack, but it's ours, and we kinda need it.
+      domain._stack.length = 0
+      process.domain = domain.active = null
     })
   }
 }
