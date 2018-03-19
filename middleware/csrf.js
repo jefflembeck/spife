@@ -25,9 +25,14 @@ function createCSRFMiddleware (opts) {
         cryptiles.randomString(CSRF_TOKEN_SIZE)
       )
       req.resetCSRF = !token
+      const initial = req.resetCSRF
 
       return next(req).then(resp => {
         if (req.resetCSRF) {
+          if (!initial) {
+            req.csrf = cryptiles.randomString(CSRF_TOKEN_SIZE)
+          }
+
           return reply.cookie(resp, CSRF_TOKEN_COOKIE, req.csrf, {
             secure: CSRF_SECUREONLY,
             httpOnly: true,
