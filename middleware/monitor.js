@@ -43,7 +43,12 @@ function statusResponse (name) {
 function gitHead () {
   return new Promise((resolve, reject) => {
     exec('git rev-parse HEAD', (err, stdout) => {
-      err ? reject(err) : resolve(stdout.trim())
+      if (err) {
+        console.warn(err.message)
+        return resolve('')
+      } else {
+        return resolve(stdout.trim())
+      }
     })
   })
 }
@@ -51,7 +56,12 @@ function gitHead () {
 function gitMessage () {
   return new Promise((resolve, reject) => {
     exec('git log --oneline --abbrev-commit  -n 1', (err, stdout) => {
-      err ? reject(err) : resolve(stdout.trim())
+      if (err) {
+        console.warn(err.message)
+        return resolve('')
+      } else {
+        return resolve(stdout.trim())
+      }
     })
   })
 }
