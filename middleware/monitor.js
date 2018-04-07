@@ -2,6 +2,7 @@
 
 module.exports = makeMonitorMiddleware
 
+const logger = require('../logging')('monitor')
 const exec = require('child_process').exec
 const Promise = require('bluebird')
 
@@ -44,7 +45,8 @@ function gitHead () {
   return new Promise((resolve, reject) => {
     exec('git rev-parse HEAD', (err, stdout) => {
       if (err) {
-        console.warn(err.message)
+        logger.error('could not exec "git rev-parse HEAD":')
+        logger.error(err)
         return resolve('')
       } else {
         return resolve(stdout.trim())
@@ -57,7 +59,8 @@ function gitMessage () {
   return new Promise((resolve, reject) => {
     exec('git log --oneline --abbrev-commit  -n 1', (err, stdout) => {
       if (err) {
-        console.warn(err.message)
+        logger.error('could not exec "git log --oneline --abbrev-commit  -n 1":')
+        logger.error(err)
         return resolve('')
       } else {
         return resolve(stdout.trim())
