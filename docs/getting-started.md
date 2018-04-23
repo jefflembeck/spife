@@ -85,14 +85,14 @@ have it, run `createdb spife_example`, and then run the following inside of
 
 ```sql
 > CREATE TABLE "destinations" (
-  id serial,
+  id serial primary key,
   name text not null,
   slug text unique not null,
   address text not null,
   created date
 );
 > CREATE TABLE "packages" (
-  id serial,
+  id serial primary key,
   public_id varchar(36) unique not null,
   destination_id integer not null references destinations(id),
   contents text not null,
