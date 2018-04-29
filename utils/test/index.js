@@ -109,7 +109,7 @@ function _loadServer (path, {
     {settings, isExternal: false, isTest: true, onclienterror: noop}
   )
 
-  return {spife, settings}
+  return spife
 }
 
 function noop () {
