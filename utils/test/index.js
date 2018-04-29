@@ -2,7 +2,7 @@
 
 module.exports = createTestServer
 
-const loadSettings = require('../../lib/settings')
+const {load} = require('../../lib/settings')
 const Server = require('../../lib/server')
 const onion = require('../../lib/onion')
 
@@ -94,7 +94,7 @@ function _loadServer (path, {
   ],
   router = null
 } = {}) {
-  const settings = loadSettings(path, {
+  const settings = load(path, {
     HOT: false,
     MIDDLEWARE: middleware,
     ...(router ? {ROUTER: router} : {})
