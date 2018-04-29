@@ -9,19 +9,19 @@ function createRequestInterceptor () {
   return {
     async processRequest (req, next) {
       await interceptor(req)
-      return await next(req)
+      return next(req)
     },
 
-    async processSuite (suite, next) {
+    processSuite (suite, next) {
       suite.setRequestInterceptor = v => {
         interceptor = v
       }
-      return await next(suite)
+      return next(suite)
     },
 
-    async processTestcase (suite, testcase, args, next) {
+    processTestcase (suite, testcase, args, next) {
       interceptor = defaultInterceptor
-      return next(suite, testcase, args) 
+      return next(suite, testcase, args)
     }
   }
 }
