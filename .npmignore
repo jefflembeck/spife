@@ -7,4 +7,4 @@ presentations
 examples
 .nyc_output
 docs
-test
+./test/
