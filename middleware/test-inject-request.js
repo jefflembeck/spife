@@ -8,7 +8,7 @@ function createRequestInjector () {
   return {
     async processSuite (suite, next) {
       suite.request = opts => {
-        return inject(suite.spife.server, opts)
+        return inject(suite.spife.onrequest, opts)
       }
       return next(suite)
     }
