@@ -89,7 +89,8 @@ function createTestServer (settingsPath, overrides) {
 function _loadServer (path, {
   middleware = [
     '@npm/spife/middleware/test-request-interceptor',
-    '@npm/spife/middleware/test-inject-request'
+    '@npm/spife/middleware/test-inject-request',
+    '@npm/spife/middleware/body-json'
   ],
   router = null
 } = {}) {
