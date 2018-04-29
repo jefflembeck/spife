@@ -4,9 +4,11 @@ module.exports = createTestServer
 
 const loadSettings = require('../../lib/settings')
 const Server = require('../../lib/server')
+const onion = require('../../lib/onion')
 
 const http = require('http')
 
+const READY = Symbol('ready')
 const READY_MAP = new WeakMap()
 
 function _getonready (server) {
@@ -33,19 +35,21 @@ class Suite {
   [READY] () {
     const {resolve} = READY_MAP.get(this)
     this.onready = _getonready(this)
+    resolve(this)
   }
 }
 
 function createTestServer (settingsPath, overrides) {
-  const spife = _loadServer(settingsPath, {middleware = null, router = null} = {})
+  const spife = _loadServer(settingsPath, overrides)
 
-  const processSuiteMiddleware = []
-  const processTestcaseMiddleware = [{
+  const processSuite = []
+  const processTestcase = [{
     async processTestcase (fn, args, next) {
       const [err, result] = await next(fn, args)
       if (err) {
         throw err
       }
+      return result
     }
   }]
 
@@ -60,7 +64,7 @@ function createTestServer (settingsPath, overrides) {
   }
 
   const processSuiteOnion = onion.sprout(
-    processSuiteMiddleware,
+    processSuite,
     suite => {
       suite[READY]()
     },
@@ -68,8 +72,8 @@ function createTestServer (settingsPath, overrides) {
   )
 
   const processTestcaseOnion = onion.sprout(
-    processTestcaseMiddleware,
-    (suite, fn, args) => {
+    processTestcase,
+    async (suite, fn, args) => {
       try {
         return [null, await fn(...args)]
       } catch (err) {

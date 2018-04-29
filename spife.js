@@ -2,10 +2,7 @@
 
 module.exports = makeSpife
 
-const Promise = require('bluebird')
-
-const STATUS_SYM = Symbol.for('spife-http-status')
-const HEADER_SYM = Symbol.for('spife-http-header')
+const Server = require('./lib/server')
 
 function makeSpife (name, server, urls, middleware, opts) {
   opts = Object.assign({
@@ -29,4 +26,3 @@ function makeSpife (name, server, urls, middleware, opts) {
 
   return spife.onready
 }
-
