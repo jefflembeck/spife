@@ -106,8 +106,11 @@ function _loadServer (path, {
     server,
     router || settings.ROUTER,
     settings.MIDDLEWARE,
-    {settings, isExternal: false, isTest: true}
+    {settings, isExternal: false, isTest: true, onclienterror: noop}
   )
 
   return {spife, settings}
+}
+
+function noop () {
 }
