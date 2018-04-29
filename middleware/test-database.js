@@ -15,9 +15,10 @@ function createDatabaseMW (opts) {
   let session = null
 
   return {
-    processSuite (suite, next) {
+    async processSuite (suite, next) {
       pool = new pg.Pool(opts)
-      return next(suite)
+      await next(suite)
+      await pool.end()
     },
 
     processTestcase (suite, testcase, args, next) {
@@ -32,13 +33,35 @@ function createDatabaseMW (opts) {
         return next(suite, (...args) => {
           let result = null
 
-          db.transaction(async () => {
-            session = db.session
-            result = await testcase(...args)
-            throw new Error('rollback')
-          })().catch(() => {})
+          let deferred = null
+          const onresult = new Promise((resolve, reject) => {
+            deferred = {resolve, reject}
+          })
+          onresult.catch(() => null)
 
-          return result
+          const rollback = new Error()
+          const txn = db.transaction(async () => {
+            session = db.session
+            try {
+              deferred.resolve(testcase(...args))
+            } catch (err) {
+              deferred.reject(err)
+            }
+
+            // wait for the test to finish...
+            await onresult.catch(() => {})
+            throw rollback
+          })
+
+          txn().catch(err => {
+            // if we caught an error that wasn't "rollback", it's probably an
+            // issue connecting to postgres that we should forward along.
+            if (err !== rollback) {
+              throw err
+            }
+          })
+
+          return onresult
         }, args)
       })
     },
@@ -47,7 +70,7 @@ function createDatabaseMW (opts) {
       session.assign(process.domain)
       return db.atomic(() => {
         return next(req)
-      })
+      })()
     }
   }
 }

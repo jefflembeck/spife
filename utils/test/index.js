@@ -9,6 +9,8 @@ const onion = require('../../lib/onion')
 const http = require('http')
 
 const READY = Symbol('ready')
+const START_SHUTDOWN = Symbol('start-shutdown')
+const CANCEL_SHUTDOWN = Symbol('cancel-shutdown')
 const READY_MAP = new WeakMap()
 
 function _getonready (server) {
@@ -19,22 +21,49 @@ function _getonready (server) {
 
 class Suite {
   constructor (spife, processSuiteOnion, processTestcaseOnion) {
+    this.onshutdown = new Promise((resolve, reject) => {
+      this.shutdown = resolve
+    })
     this.spife = spife
+    this.spifeready = this.spife.onready
     this.onready = _getonready(this)
     this.onfinish = processSuiteOnion(this)
+    this.processTestcase = processTestcaseOnion
+    this.extant = 0
+    this.timeout = null
   }
 
   isolate (fn) {
+    ++this.extant
+    this[CANCEL_SHUTDOWN]()
     return async (...args) => {
-      await this.spife.onready
+      await this.spifeready
       await this.onready
-      return this.processTestcase(this, fn, args)
+
+      try {
+        return await this.processTestcase(this, fn, args)
+      } finally {
+        --this.extant
+        if (this.extant === 0) {
+          this[START_SHUTDOWN]()
+        }
+      }
     }
+  }
+
+  [START_SHUTDOWN] () {
+    this.timeout = setTimeout(() => {
+      this.shutdown()
+    }, 5)
+  }
+
+  [CANCEL_SHUTDOWN] () {
+    clearTimeout(this.timeout)
+    this.timeout = null
   }
 
   [READY] () {
     const {resolve} = READY_MAP.get(this)
-    this.onready = _getonready(this)
     resolve(this)
   }
 }
@@ -43,15 +72,15 @@ function createTestServer (settingsPath, overrides) {
   const spife = _loadServer(settingsPath, overrides)
 
   const processSuite = []
-  const processTestcase = [{
-    async processTestcase (fn, args, next) {
-      const [err, result] = await next(fn, args)
+  const processTestcase = [
+    async function processTestcase (suite, fn, args, next) {
+      const [err, result] = await next(suite, fn, args)
       if (err) {
         throw err
       }
       return result
     }
-  }]
+  ]
 
   for (const xs of spife._middleware) {
     if (typeof xs.processSuite === 'function') {
@@ -65,8 +94,9 @@ function createTestServer (settingsPath, overrides) {
 
   const processSuiteOnion = onion.sprout(
     processSuite,
-    suite => {
+    async suite => {
       suite[READY]()
+      await suite.onshutdown
     },
     1
   )
