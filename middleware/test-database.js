@@ -31,8 +31,6 @@ function createDatabaseMW (opts) {
 
       return d.run(() => {
         return next(suite, (...args) => {
-          let result = null
-
           let deferred = null
           const onresult = new Promise((resolve, reject) => {
             deferred = {resolve, reject}
