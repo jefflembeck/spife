@@ -3,6 +3,7 @@
 module.exports = createLoggingMiddleware
 
 const createPrinter = require('@npm/spife-dev-logger')
+const logstring = require('common-log-string')
 
 const bole = require('../logging')
 const reply = require('../reply')
@@ -32,30 +33,43 @@ function createLoggingMiddleware (opts) {
     },
 
     processRequest (req, next) {
+      const defaultToCommonLog = process.env.ENVIRONMENT === 'production' || process.env.ENVIRONMENT === 'staging'
+
       req._logRaw()
       return next(req).then(res => {
-        logger.info({
-          url: req.url,
-          statusCode: reply.status(res) || 200,
-          headers: reply.headers(res),
-          method: req.method,
-          latency: req.latency
-        })
+        const statusCode = reply.status(res) || 200
+        const output = defaultToCommonLog
+          ? logstring(req, Object.assign({}, res, { statusCode }))
+          : {
+            url: req.url,
+            statusCode,
+            headers: reply.headers(res),
+            method: req.method,
+            latency: req.latency,
+            common: logstring(req, Object.assign({}, res, { statusCode }))
+          }
+
+        logger.info(output)
 
         return res
       }).catch(err => {
-        const status = reply.status(err) || 500
-        logger.info({
+        const statusCode = reply.status(err) || 500
+        const output = defaultToCommonLog
+        ? logstring(req, Object.assign({}, err, { statusCode }))
+        : {
           url: req.url,
-          statusCode: status,
+          statusCode,
           error: err.message,
           headers: reply.headers(err),
           method: req.method,
-          latency: req.latency
-        })
+          latency: req.latency,
+          common: logstring(req, Object.assign({}, err, { statusCode }))
+        }
 
-        if (status >= 500) {
-          logger.error(err)
+        logger.info(output)
+
+        if (statusCode >= 500) {
+          defaultToCommonLog ? logger.error(output) : logger.error(err)
         }
 
         throw err
