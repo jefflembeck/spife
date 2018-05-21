@@ -2,8 +2,10 @@
 
 module.exports = createDatabaseMW
 
+const concat = require('concat-stream')
 const pg = require('../db/connection')
 const db = require('../db/session')
+const reply = require('../reply')
 const orm = require('../db/orm')
 
 /* eslint-disable node/no-deprecated-api */
@@ -66,8 +68,23 @@ function createDatabaseMW (opts) {
 
     processRequest (req, next) {
       session.assign(process.domain)
-      return db.atomic(() => {
-        return next(req)
+      return db.atomic(async () => {
+        const resp = await next(req)
+        if (!resp || !resp.pipe) {
+          return resp
+        }
+
+        const stream = reply.toStream(resp)
+        const result = await {
+          then (ondata, onerror) {
+            stream
+              .on('error', onerror)
+              .pipe(concat(ondata))
+              .on('error', onerror)
+          }
+        }
+
+        return reply(result, reply.status(stream), reply.headers(stream))
       })()
     }
   }
