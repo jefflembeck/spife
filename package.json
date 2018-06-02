@@ -47,7 +47,7 @@
     "chokidar": "^2.0.3",
     "concat-stream": "^1.6.2",
     "cookie": "^0.3.1",
-    "dotenv": "^4.0.0",
+    "dotenv": "^6.0.0",
     "find-up": "^2.1.0",
     "format-link-header": "^2.0.0",
     "glob": "^7.1.1",
