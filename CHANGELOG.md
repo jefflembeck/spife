@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="11.2.5"></a>
+## [11.2.5](https://github.com/npm/spife/compare/v11.2.4...v11.2.5) (2018-07-26)
+
+
+
 <a name="11.1.5"></a>
 ## [11.1.5](https://github.com/npm/spife/compare/v11.1.3...v11.1.5) (2018-04-07)
 
