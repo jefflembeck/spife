@@ -16,7 +16,7 @@ const tap = require('tap')
 
 tap.test('hello', suite.isolate(async assert => {
   // hooked into spife!
-  suite.inject(req => { // useful for mocking things added by middleware
+  suite.intercept(req => { // useful for mocking things added by middleware
     req.apiClient = {
       get: async () => ({message: 'hello'})
     }
@@ -39,7 +39,7 @@ describe('hello', () => {
   const suite = createTestServer(require.resolve('../lib/path/to/your/settings'))
 
   it('should say hello', suite.isolate(async assert => {
-    suite.inject(req => { // useful for mocking things added by middleware
+    suite.intercept(req => { // useful for mocking things added by middleware
       req.apiClient = {
         get: async () => ({message: 'hello'})
       }
@@ -70,7 +70,7 @@ const suite = createTestServer(require.resolve('../lib/path/to/settings'), {
     '@npm/spife/foo',
     ['@npm/spife/middleware/test-database', {}],
     { // inline middleware
-      async processServer (suite, next) {
+      async processSuite (suite, next) {
         await setupDB()
         await next(suite)
       }
