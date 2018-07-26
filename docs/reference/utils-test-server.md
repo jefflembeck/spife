@@ -16,6 +16,11 @@ const tap = require('tap')
 
 tap.test('hello', suite.isolate(async assert => {
   // hooked into spife!
+  suite.inject(req => { // useful for mocking things added by middleware
+    req.apiClient = {
+      get: async () => ({message: 'hello'})
+    }
+  })
   const resp = await suite.request({
     method: "GET",
     url: '/v1/hello'
@@ -26,7 +31,7 @@ tap.test('hello', suite.isolate(async assert => {
 ```
 
 ```javascript
-// or use mocha...
+// or with mocha...
 const createTestServer = require('@npm/spife/utils/test-server')
 const {assert} = require('chai')
 
@@ -37,6 +42,11 @@ describe('hello', () => {
   })
 
   it('should say hello', suite.isolate(async assert => {
+    suite.inject(req => { // useful for mocking things added by middleware
+      req.apiClient = {
+        get: async () => ({message: 'hello'})
+      }
+    })
     const resp = await suite.request({
       method: "GET",
       url: '/v1/hello'
