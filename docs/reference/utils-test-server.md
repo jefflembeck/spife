@@ -36,10 +36,7 @@ const createTestServer = require('@npm/spife/utils/test-server')
 const {assert} = require('chai')
 
 describe('hello', () => {
-  let suite
-  before(() => {
-    suite = createTestServer(require.resolve('../lib/path/to/your/settings'))
-  })
+  const suite = createTestServer(require.resolve('../lib/path/to/your/settings'))
 
   it('should say hello', suite.isolate(async assert => {
     suite.inject(req => { // useful for mocking things added by middleware
