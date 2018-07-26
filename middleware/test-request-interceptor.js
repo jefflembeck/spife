@@ -13,8 +13,9 @@ function createRequestInterceptor () {
     },
 
     processSuite (suite, next) {
-      suite.setRequestInterceptor = v => {
-        interceptor = v
+      suite.setRequestInterceptor =
+      suite.intercept = fn => {
+        interceptor = fn
       }
       return next(suite)
     },
