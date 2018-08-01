@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="11.4.0"></a>
+# [11.4.0](https://github.com/npm/spife/compare/v11.2.4...v11.4.0) (2018-08-01)
+
+
+### Features
+
+* automatically handle JSON bodies in test requests ([#91](https://github.com/npm/spife/issues/91)) ([115557a](https://github.com/npm/spife/commit/115557a))
+
+
+
 <a name="11.2.5"></a>
 ## [11.2.5](https://github.com/npm/spife/compare/v11.2.4...v11.2.5) (2018-07-26)
 
