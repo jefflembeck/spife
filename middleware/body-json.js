@@ -14,9 +14,10 @@ function createJSONParsingMW ({accept = (req) => true} = {}) {
         return next(req, stream)
       }
 
-      return new Promise((resolve, reject) => {
+      req.rawBody = new Promise((resolve, reject) => {
         stream.on('error', reject).pipe(concat(stream, resolve))
-      }).then(buf => {
+      })
+      return req.rawBody.then(buf => {
         if (buf.length === 0) {
           return null
         }
