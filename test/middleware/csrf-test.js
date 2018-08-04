@@ -6,11 +6,11 @@ const cookie = require('cookie')
 const http = require('http')
 const tap = require('tap')
 
-const bodyURLEncoded = require('../middleware/body-urlencoded')
-const CSRFMiddleware = require('../middleware/csrf')
-const bodyJson = require('../middleware/body-json')
-const routes = require('../routing')
-const spife = require('..')
+const bodyURLEncoded = require('../../middleware/body-urlencoded')
+const CSRFMiddleware = require('../../middleware/csrf')
+const bodyJson = require('../../middleware/body-json')
+const routes = require('../../routing')
+const spife = require('../..')
 
 test('csrf: get url sets csrftoken', assert => {
   return test.request().then(resp => {

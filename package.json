@@ -4,7 +4,7 @@
   "description": ":curry: :knife_fork_plate: a jshttp based µframework :knife_fork_plate: :spaghetti:",
   "main": "spife.js",
   "scripts": {
-    "test": "tap ${TAP_FLAGS:-'--'} test/**/*-test.js",
+    "test": "tap ${TAP_FLAGS:-'--'} test",
     "lint": "standard",
     "posttest": "npm run lint",
     "cov:test": "TAP_FLAGS='--cov' npm t",

@@ -5,9 +5,9 @@ const request = require('request')
 const http = require('http')
 const tap = require('tap')
 
-const CspMiddleware = require('../middleware/csp')
-const routes = require('../routing')
-const spife = require('..')
+const CspMiddleware = require('../../middleware/csp')
+const routes = require('../../routing')
+const spife = require('../..')
 
 test('csp: sets header', assert => {
   return test.request().then(resp => {
