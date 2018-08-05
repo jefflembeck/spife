@@ -29,7 +29,7 @@ const testSuite = createTestServer(__filename, {
         return jsonParsingEnabled
       }
     }],
-    ['../../middleware/body-raw', {final: true}],
+    ['../../middleware/body-raw', {final: true}]
   ]
 })
 
