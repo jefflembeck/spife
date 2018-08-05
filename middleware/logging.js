@@ -15,15 +15,21 @@ function createLoggingMiddleware (opts) {
     stream: null
   }, opts || {})
 
+  const isDev = (
+    process.stdout.isTTY &&
+    process.env.NODE_ENV !== 'production' &&
+    process.env.NODE_ENV !== 'staging'
+  )
+
   return {
     processServer (server, next) {
       if (opts.stream === null) {
         const pretty = createPrinter()
         opts.stream = (
-          process.stdout.isTTY &&
-          process.env.ENVIRONMENT !== 'production' &&
-          process.env.ENVIRONMENT !== 'staging'
-        ) ? (pretty.pipe(process.stdout), pretty) : process.stdout
+          isDev
+          ? (pretty.pipe(process.stdout), pretty)
+          : process.stdout
+        )
       }
       bole.output(opts)
       return next(server).then(() => {
@@ -32,7 +38,9 @@ function createLoggingMiddleware (opts) {
     },
 
     processRequest (req, next) {
-      req._logRaw()
+      if (isDev) {
+        req._logRaw()
+      }
       return next(req).then(res => {
         logger.info({
           url: req.url,
