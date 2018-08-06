@@ -125,6 +125,7 @@ function _loadServer (path, {
   router = null
 } = {}) {
   const settings = load(path, {
+    TEST: true,
     HOT: false,
     MIDDLEWARE: middleware,
     ...(router ? {ROUTER: router} : {})
