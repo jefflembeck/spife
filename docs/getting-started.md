@@ -699,27 +699,50 @@ specifically configured for your Spife server — easy as that!
 
 #### :art: Middleware
 
-* [hateoas](https://en.wikipedia.org/wiki/HATEOAS)
-* [rest](https://en.wikipedia.org/wiki/Representational_state_transfer)
-* [routing-reverse](https://github.com/chrisdickinson/reverse)
-* [pg](https://github.com/brianc/node-postgres)
-* [pg-db-session](https://github.com/npm/pg-db-session)
-* [ormnomnom](https://github.com/chrisdickinson/ormnomnom)
-* [numbat-emitter](https://github.com/ceejbot/numbat-emitter)
-* [restify-monitor](https://github.com/npm/restify-monitor)
-* [bole](http://github.com/rvagg/bole)
-* [request-lifecycle](./topics/request-lifecycle.md)
-* [topic-docs](./topics)
-* [reference-docs](./reference)
-* [babel](https://babeljs.io/)
-* [ref-spife-request](./reference/request.md)
-* [ref-spife-reply](./reference/reply.md)
-* [model](#floppydisk-models)
-* [joi](https://github.com/hapijs/joi)
-* [ormnomnom-install-postgres](https://github.com/chrisdickinson/ormnomnom/blob/1de3c2fc89136745436e0cc38ed6bc919e699bbc/docs/getting-started.md#getting-postgres)
-* [ref-spife-validate](./reference/decorator-validate.md)
-* [def-decorator](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.dnzdeh2v6)
-* [ormnomnom-resolution](https://github.com/chrisdickinson/ormnomnom/blob/master/docs/making-queries.md#basic-querying)
-* [ormnomnom-getorcreate](https://github.com/chrisdickinson/ormnomnom/blob/master/docs/ref/dao.md#daomodelgetorcreateobject--promiseboolean-model)
-* [reverse-reverse](https://github.com/chrisdickinson/reverse#routerreversenamestring-argsobject--string--null)
-* [bluebird-catch-clause](http://bluebirdjs.com/docs/api/catch.html)
+[hateoas](https://en.wikipedia.org/wiki/HATEOAS)
+
+[rest](https://en.wikipedia.org/wiki/Representational_state_transfer)
+
+[routing-reverse](https://github.com/chrisdickinson/reverse)
+
+[pg](https://github.com/brianc/node-postgres)
+
+[pg-db-session](https://github.com/npm/pg-db-session)
+
+[ormnomnom](https://github.com/chrisdickinson/ormnomnom)
+
+[numbat-emitter](https://github.com/ceejbot/numbat-emitter)
+
+[restify-monitor](https://github.com/npm/restify-monitor)
+
+[bole](http://github.com/rvagg/bole)
+
+[request-lifecycle](./topics/request-lifecycle.md)
+
+[topic-docs](./topics)
+
+[reference-docs](./reference)
+
+[babel](https://babeljs.io/)
+
+[ref-spife-request](./reference/request.md)
+
+[ref-spife-reply](./reference/reply.md)
+
+[model](#floppydisk-models)
+
+[joi](https://github.com/hapijs/joi)
+
+[ormnomnom-install-postgres](https://github.com/chrisdickinson/ormnomnom/blob/1de3c2fc89136745436e0cc38ed6bc919e699bbc/docs/getting-started.md#getting-postgres)
+
+[ref-spife-validate](./reference/decorator-validate.md)
+
+[def-decorator](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.dnzdeh2v6)
+
+[ormnomnom-resolution](https://github.com/chrisdickinson/ormnomnom/blob/master/docs/making-queries.md#basic-querying)
+
+[ormnomnom-getorcreate](https://github.com/chrisdickinson/ormnomnom/blob/master/docs/ref/dao.md#daomodelgetorcreateobject--promiseboolean-model)
+
+[reverse-reverse](https://github.com/chrisdickinson/reverse#routerreversenamestring-argsobject--string--null)
+
+[bluebird-catch-clause](http://bluebirdjs.com/docs/api/catch.html)
