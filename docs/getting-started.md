@@ -699,6 +699,14 @@ specifically configured for your Spife server — easy as that!
 
 #### :art: Middleware
 
+> Note: More information regarding this section coming soon. ✨
+
+
+[Table of Contents ⏎](#books-table-of-contents)
+
+
+<!--- The below references are used earlier in this document, and should not be modified. --->
+
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
