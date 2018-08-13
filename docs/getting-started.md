@@ -89,7 +89,7 @@ $ bin/manage.js runserver
 [Table of Contents ⏎](#books-table-of-contents)
 
 
-# :right: Your Second Spife: Extending Spife
+## :arrow_right: Your Second Spife: Extending Spife
 Let's build a simple spife service for sending and receiving physical
 :package:'s. At the end of this tutorial section, we should be able to:
 
