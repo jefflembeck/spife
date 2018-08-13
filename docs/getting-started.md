@@ -32,7 +32,7 @@ the section.
 
 ## :books: Table of Contents
 
-* [:beginner: Your First Spife](#beginner-your-first-spife)
+* [:beginner: Hello Spife](#beginner-hello-spife)
   * [Step 1: Create your project](#step-1-create-your-project)
   * [Step 2: Run the application](#step-2-run-the-application)
 * [:arrow_right: Your Second Spife: Extending Spife](#arrow_right-your-second-spife-extending-spife)
@@ -45,7 +45,7 @@ the section.
   * [:clapper: Server](#clapper-server)
     * [:art: Middleware](#art-middleware)
 
-## :beginner: Your First Spife
+## :beginner: Hello Spife!
 ### Step 1: Create your project
 
 Bootstrap using the following command:
@@ -75,7 +75,11 @@ Once the project initialization is complete, run `tree` to see the following pat
 ```
 
 ### Step 2: Run the application 
-Let's `cd my-first-spife-project`.
+Let's peek at created project:
+
+```bash
+$ cd my-first-spife-project
+```
 
 > :information\_source: For now, you will also need to run `npm install cryptiles` before running the application as discussed below. Otherwise, you will likely see an error concerning the package dependency not being installed.
 
@@ -84,6 +88,24 @@ To run the application locally, run:
 ```bash
 $ bin/manage.js runserver
 ```
+
+This should result in:
+
+```bash
+spife hot reload active
+{ time: '20XX-XX-XXTXX:XX:XX.XXXZ',
+  hostname: 'your_hostname',
+  pid: XXX,
+  level: 'info',
+  name: 'my-first-spife-project-$PID',
+  message: 'online at http://localhost:8124' }
+  ```
+
+Sweet!
+
+From here, access `http://localhost:8124` and you should see the text, "welcome to spife!" 
+
+If you'd like to play around with this example, there's more discussion surrounding the example in a [Q1 2018 presentation](https://github.com/npm/spife/blob/master/presentations/2018-q1.md#routing).
 
 
 [Table of Contents ⏎](#books-table-of-contents)
