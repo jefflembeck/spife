@@ -32,10 +32,10 @@ the section.
 
 ## :books: Table of Contents
 
-* [:beginner: Hello Spife](#beginner-hello-spife)
+* [:earth_americas: Hello Spife!](#earth-americas-hello-spife)
   * [Step 1: Create your project](#step-1-create-your-project)
   * [Step 2: Run the application](#step-2-run-the-application)
-* [:arrow_right: Your Second Spife: Extending Spife](#arrow_right-your-second-spife-extending-spife)
+* [:fork_and_knife: Now We're Cooking: Extending Spife](#fork-and-knife-now-we're-cooking-extending-spife)
   * [:floppy\_disk: Models](#floppy_disk-models)
   * [:busstop: Routes](#busstop-routes)
   * [:mount\_fuji: Views](#mount_fuji-views)
@@ -45,7 +45,7 @@ the section.
   * [:clapper: Server](#clapper-server)
     * [:art: Middleware](#art-middleware)
 
-## :beginner: Hello Spife!
+## :earth_americas: Hello Spife!
 ### Step 1: Create your project
 
 Bootstrap using the following command:
@@ -111,7 +111,7 @@ If you'd like to play around with this example, there's more discussion surround
 [Table of Contents ⏎](#books-table-of-contents)
 
 
-## :arrow_right: Your Second Spife: Extending Spife
+## :fork_and_knife: Now We're Cooking: Extending Spife
 Let's build a simple spife service for sending and receiving physical
 :package:'s. At the end of this tutorial section, we should be able to:
 
