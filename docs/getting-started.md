@@ -33,6 +33,9 @@ the section.
 ## :books: Table of Contents
 
 * [:beginner: Your First Spife](#beginner-your-first-spife)
+  * [Step 1: Create your project](#create-your-project)
+  * [Step 2: Run the application](#run-the-application)
+* [:right: Your Second Spife: Extending Spife](#intermediate-your-second-spife)
   * [:floppy\_disk: Models](#floppydisk-models)
   * [:busstop: Routes](#busstop-routes)
   * [:mount\_fuji: Views](#mountfuji-views)
@@ -43,16 +46,59 @@ the section.
     * [:art: Middleware](#art-middleware)
 
 ## :beginner: Your First Spife
+### Step 1: Create your project
 
+Bootstrap using the following command:
+
+```bash
+$ npx @npm/spife init project my-first-spife-project
+```
+
+Feel free to use the defaults when prompts are given.
+
+Once the project initialization is complete, run `tree` to see the following paths that have been created:
+
+```console
+.
+├── bin
+│   └── manage.js
+├── lib
+│   ├── apps
+│   ├── routes.js
+│   ├── settings.js
+│   └── views.js
+├── node_modules 
+│   └── <snip>
+├── package-lock.json
+├── package.json
+└── test
+```
+
+### Step 2: Run the application 
+Let's `cd my-first-spife-project`.
+
+> :information\_source: For now, you will also need to run `npm install cryptiles` before running the application as discussed below. Otherwise, you will likely see an error concerning the package dependency not being installed.
+
+To run the application locally, run:
+
+```bash
+$ bin/manage.js runserver
+```
+
+
+[Table of Contents ⏎](#books-table-of-contents)
+
+
+# :right: Your Second Spife: Extending Spife
 Let's build a simple spife service for sending and receiving physical
-:package:'s. We should be able to:
+:package:'s. At the end of this tutorial section, we should be able to:
 
 1. List packages in-flight,
 2. Create new packages,
 3. Update packages,
 4. And mark packages as having been delivered.
 
-To start, run the following commands in a new directory:
+To start, run the following commands in a **new test project** directory:
 
 ```bash
 # inside of your new directory
@@ -61,17 +107,15 @@ $ mkdir -p lib/{models,urls,views}
 $ touch lib/{server,models/{destination,package},urls/index,views/index}.js
 ```
 
-Your directory should have the following structure. If you have the `tree`
-command available, you can easily verify this by running `tree .` inside
-of your new directory.
+Let's `tree` to confirm the created scaffold:
 
 ```console
 .
 └── lib
-    ├── server.js
     ├── models
     │   ├── destination.js
     │   └── package.js
+    ├── server.js
     ├── urls
     │   └── index.js
     └── views
@@ -693,14 +737,15 @@ specifically configured for your Spife server — easy as that!
 
 ### :clapper: Server
 
+> Note: More information regarding this section coming soon. :sparkles:
+
 [Table of Contents ⏎](#books-table-of-contents)
 
 <a id="middleware"></a>
 
 #### :art: Middleware
 
-> Note: More information regarding this section coming soon. ✨
-
+> Note: More information regarding this section coming soon. :sparkles:
 
 [Table of Contents ⏎](#books-table-of-contents)
 
