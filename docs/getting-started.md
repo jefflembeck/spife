@@ -33,9 +33,9 @@ the section.
 ## :books: Table of Contents
 
 * [:beginner: Your First Spife](#beginner-your-first-spife)
-  * [Step 1: Create your project](#create-your-project)
-  * [Step 2: Run the application](#run-the-application)
-* [:right: Your Second Spife: Extending Spife](#intermediate-your-second-spife)
+  * [Step 1: Create your project](#step-1-create-your-project)
+  * [Step 2: Run the application](#step-2-run-the-application)
+* [:arrow_right: Your Second Spife: Extending Spife](#arrow_right-your-second-spife-extending-spife)
   * [:floppy\_disk: Models](#floppydisk-models)
   * [:busstop: Routes](#busstop-routes)
   * [:mount\_fuji: Views](#mountfuji-views)
