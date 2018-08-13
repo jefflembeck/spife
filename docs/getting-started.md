@@ -41,7 +41,7 @@ the section.
   * [:mount\_fuji: Views](#mount_fuji-views)
     * [:orange\_book: Paginated Views](#orange_book-paginated-views)
     * [:skull: User Input](#skull-user-input)
-    * [:triangular\_ruler: :evergreen\_tree: Metrics and Logging](#triangular_ruler-evergreentree-metrics-and-logging)
+    * [:triangular\_ruler: :evergreen\_tree: Metrics and Logging](#triangular_ruler-evergreen_tree-metrics-and-logging)
   * [:clapper: Server](#clapper-server)
     * [:art: Middleware](#art-middleware)
 
