@@ -32,27 +32,93 @@ the section.
 
 ## :books: Table of Contents
 
-* [:beginner: Your First Spife](#beginner-your-first-spife)
-  * [:floppy\_disk: Models](#floppydisk-models)
+* [:earth_americas: Hello Spife!](#earth-americas-hello-spife)
+  * [Step 1: Create your project](#step-1-create-your-project)
+  * [Step 2: Run the application](#step-2-run-the-application)
+* [:fork_and_knife: Now We're Cooking: Extending Spife](#fork-and-knife-now-we're-cooking-extending-spife)
+  * [:floppy\_disk: Models](#floppy_disk-models)
   * [:busstop: Routes](#busstop-routes)
-  * [:mount\_fuji: Views](#mountfuji-views)
-    * [:orange\_book: Paginated Views](#orangebook-paginated-views)
+  * [:mount\_fuji: Views](#mount_fuji-views)
+    * [:orange\_book: Paginated Views](#orange_book-paginated-views)
     * [:skull: User Input](#skull-user-input)
-    * [:triangular\_ruler: :evergreen\_tree: Metrics and Logging](#triangularruler-evergreentree-metrics-and-logging)
+    * [:triangular\_ruler: :evergreen\_tree: Metrics and Logging](#triangular_ruler-evergreen_tree-metrics-and-logging)
   * [:clapper: Server](#clapper-server)
     * [:art: Middleware](#art-middleware)
 
-## :beginner: Your First Spife
+## :earth_americas: Hello Spife!
+### Step 1: Create your project
 
+Bootstrap using the following command:
+
+```bash
+$ npx @npm/spife init project my-first-spife-project
+```
+
+Feel free to use the defaults when prompts are given.
+
+Once the project initialization is complete, run `tree` to see the following paths that have been created:
+
+```console
+.
+├── bin
+│   └── manage.js
+├── lib
+│   ├── apps
+│   ├── routes.js
+│   ├── settings.js
+│   └── views.js
+├── node_modules 
+│   └── <snip>
+├── package-lock.json
+├── package.json
+└── test
+```
+
+### Step 2: Run the application 
+Let's peek at created project:
+
+```bash
+$ cd my-first-spife-project
+```
+
+To run the application locally, run:
+
+```bash
+$ bin/manage.js runserver
+```
+
+This should result in:
+
+```bash
+spife hot reload active
+{ time: '20XX-XX-XXTXX:XX:XX.XXXZ',
+  hostname: 'your_hostname',
+  pid: XXX,
+  level: 'info',
+  name: 'my-first-spife-project-$PID',
+  message: 'online at http://localhost:8124' }
+  ```
+
+Sweet!
+
+From here, access `http://localhost:8124` and you should see the text, "welcome to spife!" 
+
+If you'd like to play around with this example, there's more discussion surrounding the example in a [Q1 2018 presentation](https://github.com/npm/spife/blob/master/presentations/2018-q1.md#routing).
+
+
+[Table of Contents ⏎](#books-table-of-contents)
+
+
+## :fork_and_knife: Now We're Cooking: Extending Spife
 Let's build a simple spife service for sending and receiving physical
-:package:'s. We should be able to:
+:package:'s. At the end of this tutorial section, we should be able to:
 
 1. List packages in-flight,
 2. Create new packages,
 3. Update packages,
 4. And mark packages as having been delivered.
 
-To start, run the following commands in a new directory:
+To start, run the following commands in a **new test project** directory:
 
 ```bash
 # inside of your new directory
@@ -61,17 +127,15 @@ $ mkdir -p lib/{models,urls,views}
 $ touch lib/{server,models/{destination,package},urls/index,views/index}.js
 ```
 
-Your directory should have the following structure. If you have the `tree`
-command available, you can easily verify this by running `tree .` inside
-of your new directory.
+Let's `tree` to confirm the created scaffold:
 
 ```console
 .
 └── lib
-    ├── server.js
     ├── models
     │   ├── destination.js
     │   └── package.js
+    ├── server.js
     ├── urls
     │   └── index.js
     └── views
@@ -693,11 +757,20 @@ specifically configured for your Spife server — easy as that!
 
 ### :clapper: Server
 
+> Note: More information regarding this section coming soon. :sparkles:
+
 [Table of Contents ⏎](#books-table-of-contents)
 
 <a id="middleware"></a>
 
 #### :art: Middleware
+
+> Note: More information regarding this section coming soon. :sparkles:
+
+[Table of Contents ⏎](#books-table-of-contents)
+
+
+<!--- The below references are used earlier in this document, and should not be modified. --->
 
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 
