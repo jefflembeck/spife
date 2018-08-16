@@ -81,8 +81,6 @@ Let's peek at created project:
 $ cd my-first-spife-project
 ```
 
-> :information\_source: For now, you will also need to run `npm install cryptiles` before running the application as discussed below. Otherwise, you will likely see an error concerning the package dependency not being installed.
-
 To run the application locally, run:
 
 ```bash
