@@ -36,9 +36,17 @@ function statusResponse (name) {
     pid: process.pid,
     uptime: process.uptime(),
     rss: process.memoryUsage(),
-    git: gitHead(),
-    message: gitMessage()
+    git: buildHash(),
+    message: buildMessage()
   })
+}
+
+async function buildHash () {
+  return process.env.BUILD_HASH || gitHead()
+}
+
+async function buildMessage () {
+  return process.env.BUILD_MESSAGE || (process.env.BUILD_HASH ? '' : gitMessage())
 }
 
 function gitHead () {
