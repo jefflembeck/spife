@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="12.2.0"></a>
+# [12.2.0](https://github.com/npm/spife/compare/v12.1.0...v12.2.0) (2018-09-26)
+
+
+### Bug Fixes
+
+* typo ([#97](https://github.com/npm/spife/issues/97)) ([a4ff0ae](https://github.com/npm/spife/commit/a4ff0ae))
+
+
+### Features
+
+* BUILD_HASH and BUILD_MESSAGE override git values in monitor ([6f090d0](https://github.com/npm/spife/commit/6f090d0))
+
+
+
 <a name="12.0.2"></a>
 ## [12.0.2](https://github.com/npm/spife/compare/v12.0.1...v12.0.2) (2018-09-11)
 
