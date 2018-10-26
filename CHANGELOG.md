@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="12.2.3"></a>
+## [12.2.3](https://github.com/npm/spife/compare/v12.2.2...v12.2.3) (2018-10-26)
+
+
+### Bug Fixes
+
+* make query metrics a count, fix body size/latency metrics ([#99](https://github.com/npm/spife/issues/99)) ([a24bb66](https://github.com/npm/spife/commit/a24bb66))
+
+
+
 <a name="12.2.2"></a>
 ## [12.2.2](https://github.com/npm/spife/compare/v12.2.1...v12.2.2) (2018-10-19)
 
