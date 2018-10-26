@@ -40,29 +40,31 @@ function createMiddleware () {
 
       return next(req, stream).then(result => {
         process.emit('metric', {
-          name: 'body',
-          fields: {
-            latency: Date.now() - start,
-            size
-          },
-          tags: {
-            route: req.viewName,
-            result: 'success'
-          }
+          name: 'body.latency',
+          value: Date.now() - start,
+          route: req.viewName,
+          result: 'success'
+        })
+        process.emit('metric', {
+          name: 'body.size',
+          value: size,
+          route: req.viewName,
+          result: 'success'
         })
 
         return result
       }, err => {
         process.emit('metric', {
-          name: 'body',
-          fields: {
-            latency: Date.now() - start,
-            size
-          },
-          tags: {
-            route: req.viewName,
-            result: 'failure'
-          }
+          name: 'body.latency',
+          value: Date.now() - start,
+          route: req.viewName,
+          result: 'failure'
+        })
+        process.emit('metric', {
+          name: 'body.size',
+          value: size,
+          route: req.viewName,
+          result: 'failure'
         })
         throw err
       })

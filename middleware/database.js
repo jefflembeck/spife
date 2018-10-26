@@ -127,7 +127,7 @@ function defaultMetrics (name) {
     onTransactionConnectionRequest (txnBaton) {
       process.emit('metric', {
         name: `${name}.query`,
-        value: 1,
+        count: 1,
         view: db.session.viewName
       })
       batonMap.set(txnBaton, {
