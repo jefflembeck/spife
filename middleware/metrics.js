@@ -83,7 +83,7 @@ function recordMetric (req, res, defaultCode) {
   process.emit('metric', {
     name: 'response',
     statusCode: status,
-    value: latency,
+    count: 1,
     route: req.viewName
   })
 }
