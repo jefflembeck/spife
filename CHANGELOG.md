@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="12.2.4"></a>
+## [12.2.4](https://github.com/npm/spife/compare/v12.2.3...v12.2.4) (2018-11-16)
+
+
+### Bug Fixes
+
+* response metrics are counts, not gauges ([#107](https://github.com/npm/spife/issues/107)) ([bb23f24](https://github.com/npm/spife/commit/bb23f24))
+
+
+
 <a name="12.2.3"></a>
 ## [12.2.3](https://github.com/npm/spife/compare/v12.2.2...v12.2.3) (2018-10-26)
 
