@@ -43,6 +43,7 @@ function createLoggingMiddleware (opts) {
       }
       return next(req).then(res => {
         logger.info({
+          ip: req.remoteAddress,
           url: req.url,
           statusCode: reply.status(res) || 200,
           headers: reply.headers(res),
@@ -54,6 +55,7 @@ function createLoggingMiddleware (opts) {
       }).catch(err => {
         const status = reply.status(err) || 500
         logger.info({
+          ip: req.remoteAddress,
           url: req.url,
           statusCode: status,
           error: err.message,
