@@ -22,7 +22,7 @@
   "author": "Chris Dickinson <chris@neversaw.us> (http://neversaw.us/)",
   "license": "MIT",
   "dependencies": {
-    "@npm/spife": "^8.2.4",
+    "@npm/spife": "^12.2.6",
     "nunjucks": "^3.0.1"
   }
 }
