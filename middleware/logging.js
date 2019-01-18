@@ -37,11 +37,14 @@ function createLoggingMiddleware (opts) {
       })
     },
 
-    processRequest (req, next) {
+    async processRequest (req, next) {
       if (isDev) {
         req._logRaw()
       }
-      return next(req).then(res => {
+
+      try {
+        const res = await next(req)
+
         logger.info({
           url: req.url,
           statusCode: reply.status(res) || 200,
@@ -51,7 +54,7 @@ function createLoggingMiddleware (opts) {
         })
 
         return res
-      }).catch(err => {
+      } catch (err) {
         const status = reply.status(err) || 500
         logger.info({
           url: req.url,
@@ -67,7 +70,7 @@ function createLoggingMiddleware (opts) {
         }
 
         throw err
-      })
+      }
     }
   }
 }

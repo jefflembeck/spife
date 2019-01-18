@@ -8,13 +8,14 @@ function createMiddleware () {
   let isExternal = false
   return {processRequest, processServer}
 
-  function processRequest (req, next) {
-    return next(req).then(response => {
+  async function processRequest (req, next) {
+    try {
+      const response = await next(req)
       if (!reply.status(response)) {
         reply.status(response, 200)
       }
       return response
-    }).catch(err => {
+    } catch (err) {
       if (!reply.status(err)) {
         if (isExternal && process.env.NODE_ENV === 'production') {
           throw new reply.InternalServerError(
@@ -26,7 +27,7 @@ function createMiddleware () {
       err.context = err.context || {}
       err.context.requestID = req.id
       throw err
-    })
+    }
   }
 
   function processServer (server, next) {

@@ -2,7 +2,10 @@
 
 module.exports = createDatabaseMiddleware
 
+const { getNamespace } = require('continuation-local-storage')
 const Promise = require('bluebird')
+
+const hooks = require('../lib/hooks')
 
 const pg = require('../db/connection')
 const db = require('../db/session')
@@ -18,6 +21,30 @@ function createDatabaseMiddleware (opts) {
   return {
     processServer (spife, next) {
       orm.setConnection(db.getConnection)
+
+      /*
+      orm.setConnection(async () => {
+        const session = hooks.getSession()
+        const connection = await pool.connect()
+        // this connection might've been opened by a previous session.
+        // we want to claim the connection as our own, now.
+        const newSession = hooks.getSession()
+        if (newSession !== session) {
+          if (newSession) {
+            newSession.release()
+          }
+          session.claim()
+        }
+
+        return {
+          connection,
+          release () {
+            connection.release()
+          }
+        }
+      })
+      */
+
       pool = new pg.Pool(opts.postgres)
       pool.on('error', err => {
         logger.error('pool client received error:')
@@ -29,7 +56,6 @@ function createDatabaseMiddleware (opts) {
         1000
       )
 
-      opts.metrics = opts.metrics || defaultMetrics(spife.name)
       poolTimer = setInterval(() => {
         process.emit('metric', {
           'name': `${spife.name}.pg-pool-available`,
@@ -50,116 +76,22 @@ function createDatabaseMiddleware (opts) {
     },
 
     processRequest (request, next) {
-      db.install(process.domain, () => {
+      db.install(hooks.getSession(), () => {
         return new Promise((resolve, reject) => {
           pool.connect((err, connection, release) => {
             err ? reject(err) : resolve({connection, release})
           })
         })
       }, Object.assign(
-        {},
-        opts.metrics || {},
+        {getContext: hooks.getSession},
         {maxConcurrency: opts.maxConnectionsPerRequest}
       ))
-
       return next(request)
     },
 
     processView (req, match, context, next) {
-      db.session.viewName = req.viewName
+      // db.session.viewName = req.viewName
       return next(req, match, context)
-    }
-  }
-}
-
-function defaultMetrics (name) {
-  var lastIdleTime = Date.now()
-  var emittedIdleExit = false
-  const batonMap = new WeakMap()
-  return {
-    onSessionIdle () {
-      lastIdleTime = Date.now()
-      emittedIdleExit = false
-    },
-    onSubsessionStart (parent, child) {
-      child.viewName = parent.viewName
-    },
-    onConnectionRequest (baton) {
-      // (onConnectionRequest - lastIdleTime) = "how long do we idle for?"
-      const now = Date.now()
-      if (!emittedIdleExit) {
-        emittedIdleExit = true
-        process.emit('metric', {
-          name: `${name}.idleTime`,
-          value: now - lastIdleTime
-        })
-      }
-      batonMap.set(baton, {
-        request: now,
-        start: null
-      })
-    },
-    onConnectionStart (baton) {
-      // onConnectionStart - onConnectionRequest = "How long did we have to
-      // wait for other connections (server-wide!) to complete?"
-      const info = batonMap.get(baton)
-      if (!info) {
-        return
-      }
-      info.start = Date.now()
-      process.emit('metric', {
-        name: `${name}.connectionWait`,
-        value: info.start - info.request,
-        view: db.session.viewName
-      })
-    },
-    onConnectionFinish (baton) {
-      const info = batonMap.get(baton)
-      if (!info) {
-        return
-      }
-      process.emit('metric', {
-        name: `${name}.connectionDuration`,
-        value: Date.now() - info.start,
-        view: db.session.viewName
-      })
-    },
-    onTransactionConnectionRequest (txnBaton) {
-      process.emit('metric', {
-        name: `${name}.query`,
-        count: 1,
-        view: db.session.viewName
-      })
-      batonMap.set(txnBaton, {
-        request: Date.now(),
-        start: null
-      })
-    },
-    onTransactionConnectionStart (txnBaton) {
-      // onTransactionConnectionStart - onTransactionConnectionRequest = "How
-      // long did we have to wait for other connections (request-wide!) to
-      // complete?"
-      const info = batonMap.get(txnBaton)
-      if (!info) {
-        return
-      }
-      info.start = Date.now()
-      process.emit('metric', {
-        name: `${name}.transactionWait`,
-        value: info.start - info.request,
-        view: db.session.viewName
-      })
-    },
-    onTransactionConnectionFinish (txnBaton) {
-      const info = batonMap.get(txnBaton)
-      if (!info) {
-        return
-      }
-      process.emit('metric', {
-        name: `${name}.transactionDuration`,
-        value: Date.now() - info.start,
-        view: db.session.viewName
-      })
     }
   }
 }
