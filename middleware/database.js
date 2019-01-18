@@ -2,7 +2,6 @@
 
 module.exports = createDatabaseMiddleware
 
-const { getNamespace } = require('continuation-local-storage')
 const Promise = require('bluebird')
 
 const hooks = require('../lib/hooks')
@@ -21,29 +20,7 @@ function createDatabaseMiddleware (opts) {
   return {
     processServer (spife, next) {
       orm.setConnection(db.getConnection)
-
-      /*
-      orm.setConnection(async () => {
-        const session = hooks.getSession()
-        const connection = await pool.connect()
-        // this connection might've been opened by a previous session.
-        // we want to claim the connection as our own, now.
-        const newSession = hooks.getSession()
-        if (newSession !== session) {
-          if (newSession) {
-            newSession.release()
-          }
-          session.claim()
-        }
-
-        return {
-          connection,
-          release () {
-            connection.release()
-          }
-        }
-      })
-      */
+      db.setup(hooks.getSession)
 
       pool = new pg.Pool(opts.postgres)
       pool.on('error', err => {
@@ -76,7 +53,7 @@ function createDatabaseMiddleware (opts) {
     },
 
     processRequest (request, next) {
-      db.install(hooks.getSession(), () => {
+      db.install(() => {
         return new Promise((resolve, reject) => {
           pool.connect((err, connection, release) => {
             err ? reject(err) : resolve({connection, release})

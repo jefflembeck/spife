@@ -4,70 +4,68 @@ module.exports = createDatabaseMW
 
 const concat = require('concat-stream')
 const pg = require('../db/connection')
+const hooks = require('../lib/hooks')
 const db = require('../db/session')
 const reply = require('../reply')
 const orm = require('../db/orm')
 
-/* eslint-disable node/no-deprecated-api */
-const domain = require('domain')
-/* eslint-enable node/no-deprecated-api */
-
 function createDatabaseMW (opts) {
   let pool = null
   let session = null
+  let dbsession = null
 
   return {
     async processSuite (suite, next) {
       pool = new pg.Pool(opts)
+      db.setup(hooks.getSession)
       await next(suite)
       await pool.end()
     },
 
     processTestcase (suite, testcase, args, next) {
-      const d = domain.create()
-      db.install(d, async () => {
+      session = hooks.startSession()
+      db.install(async () => {
         const connection = await pool.connect()
         return {connection, release: connection.release}
       })
       orm.setConnection(db.getConnection)
 
-      return d.run(() => {
-        return next(suite, (...args) => {
-          let deferred = null
-          const onresult = new Promise((resolve, reject) => {
-            deferred = {resolve, reject}
-          })
-          onresult.catch(() => null)
+      return next(suite, (...args) => {
+        let deferred = null
+        const onresult = new Promise((resolve, reject) => {
+          deferred = {resolve, reject}
+        })
+        onresult.catch(() => null)
 
-          const rollback = new Error()
-          const txn = db.transaction(async () => {
-            session = db.session
-            try {
-              deferred.resolve(testcase(...args))
-            } catch (err) {
-              deferred.reject(err)
-            }
+        const rollback = new Error()
+        const txn = db.transaction(async () => {
+          dbsession = db.session
+          try {
+            deferred.resolve(testcase(...args))
+          } catch (err) {
+            deferred.reject(err)
+          }
 
-            // wait for the test to finish...
-            await onresult.catch(() => {})
-            throw rollback
-          })
+          // wait for the test to finish...
+          await onresult.catch(() => {})
+          throw rollback
+        })
 
-          txn().catch(err => {
-            // if we caught an error that wasn't "rollback", it's probably an
-            // issue connecting to postgres that we should forward along.
-            if (err !== rollback) {
-              throw err
-            }
-          })
+        txn().catch(err => {
+          // if we caught an error that wasn't "rollback", it's probably an
+          // issue connecting to postgres that we should forward along.
+          if (err !== rollback) {
+            throw err
+          }
+        })
 
-          return onresult
-        }, args)
-      })
+        session.end()
+        return onresult
+      }, args)
     },
 
     processRequest (req, next) {
-      session.assign(process.domain)
+      dbsession.assign(hooks.getSession())
       return db.atomic(async () => {
         const resp = await next(req)
         if (!resp || !resp.pipe) {
