@@ -55,7 +55,7 @@
     "format-link-header": "^2.0.0",
     "glob": "^7.1.1",
     "minipass": "^2.2.1",
-    "mississippi": "^1.2.0",
+    "mississippi": "^4.0.0",
     "numbat-emitter": "^5.2.1",
     "numbat-process": "^2.2.2",
     "once": "^1.4.0",
