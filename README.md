@@ -76,7 +76,7 @@ in the repository directory. From there you can:
 
 ISC
 
-[bole]: http://github.com/rvagg/bole
+[bole]: https://github.com/rvagg/bole
 [docs]: ./docs
 [getting-started]: ./docs/getting-started.md
 [faq]: ./docs/faq.md
@@ -95,7 +95,7 @@ ISC
 [ref-transaction]: ./docs/reference/decorator-transaction.md
 [ref-validate]: ./docs/reference/decorator-validate.md
 [ref-view-paginate]: ./docs/reference/view-paginate.md
-[restify-monitor]: https://github.com/npm/restify-monitor
+[restify-monitor]: https://www.npmjs.com/package/@ceejbot/restify-monitor
 [reverse]: https://github.com/chrisdickinson/reverse
 [topic-ethos]: ./docs/topics/ethos.md
 [topic-request-lifecycle]: ./docs/topics/request-lifecycle.md
