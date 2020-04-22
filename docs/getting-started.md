@@ -786,7 +786,7 @@ specifically configured for your Spife server — easy as that!
 
 [numbat-emitter]: https://github.com/ceejbot/numbat-emitter
 
-[restify-monitor]: https://github.com/npm/restify-monitor
+[restify-monitor]: https://www.npmjs.com/package/@ceejbot/restify-monitor
 
 [bole]: http://github.com/rvagg/bole
 
