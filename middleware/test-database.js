@@ -53,15 +53,16 @@ function createDatabaseMW (opts) {
             throw rollback
           })
 
-          txn().catch(err => {
-            // if we caught an error that wasn't "rollback", it's probably an
-            // issue connecting to postgres that we should forward along.
-            if (err !== rollback) {
-              throw err
-            }
-          })
-
-          return onresult
+          return Promise.all([
+            onresult,
+            txn().catch(err => {
+              // if we caught an error that wasn't "rollback", it's probably an
+              // issue connecting to postgres that we should forward along.
+              if (err !== rollback) {
+                throw err
+              }
+            })
+          ])
         }, args)
       })
     },

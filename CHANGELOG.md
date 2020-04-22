@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="12.2.7"></a>
+## [12.2.7](https://github.com/npm/spife/compare/v12.2.6...v12.2.7) (2019-07-29)
+
+
+### Bug Fixes
+
+* **docs:** Incorrect/non-public URL in docs ([#106](https://github.com/npm/spife/issues/106)) ([a808f0b](https://github.com/npm/spife/commit/a808f0b))
+* properly forward errors in test db middleware ([#121](https://github.com/npm/spife/issues/121)) ([7006a2d](https://github.com/npm/spife/commit/7006a2d)), closes [#119](https://github.com/npm/spife/issues/119)
+
+
+
 <a name="12.2.4"></a>
 ## [12.2.4](https://github.com/npm/spife/compare/v12.2.3...v12.2.4) (2018-11-16)
 

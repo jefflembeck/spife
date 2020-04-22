@@ -2,9 +2,9 @@
 
 module.exports = createTestServer
 
+const middlewareRunner = require('../../lib/middleware-runner')
 const {load} = require('../../lib/settings')
 const Server = require('../../lib/server')
-const onion = require('../../lib/onion')
 
 const http = require('http')
 
@@ -20,15 +20,15 @@ function _getonready (server) {
 }
 
 class Suite {
-  constructor (spife, processSuiteOnion, processTestcaseOnion) {
+  constructor (spife, processSuiteMWStack, processTestcaseMWStack) {
     this.onshutdown = new Promise((resolve, reject) => {
       this.shutdown = resolve
     })
     this.spife = spife
     this.spifeready = this.spife.onready
     this.onready = _getonready(this)
-    this.onfinish = processSuiteOnion(this)
-    this.processTestcase = processTestcaseOnion
+    this.onfinish = processSuiteMWStack(this)
+    this.processTestcase = processTestcaseMWStack
     this.extant = 0
     this.timeout = null
   }
@@ -92,16 +92,15 @@ function createTestServer (settingsPath, overrides) {
     }
   }
 
-  const processSuiteOnion = onion.sprout(
+  const processSuiteMWStack = middlewareRunner(
     processSuite,
     async suite => {
       suite[READY]()
       await suite.onshutdown
-    },
-    1
+    }
   )
 
-  const processTestcaseOnion = onion.sprout(
+  const processTestcaseMWStack = middlewareRunner(
     processTestcase,
     async (suite, fn, args) => {
       try {
@@ -109,11 +108,10 @@ function createTestServer (settingsPath, overrides) {
       } catch (err) {
         return [err, null]
       }
-    },
-    3
+    }
   )
 
-  return new Suite(spife, processSuiteOnion, processTestcaseOnion)
+  return new Suite(spife, processSuiteMWStack, processTestcaseMWStack)
 }
 
 function _loadServer (path, {
